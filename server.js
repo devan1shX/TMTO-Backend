@@ -37,6 +37,16 @@ app.get("/technologies", async (req, res) => {
 });
 
 
+app.get("/patents", async (req, res) => {
+  try {
+    const intros = await TechDetail.find({});
+    res.json(intros);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error fetching introductory technology data" });
+  }
+});
+
 
 // 2. GET /events
 //    Returns all events from the "events" collection
@@ -51,6 +61,22 @@ app.get("/events", async (req, res) => {
 });
 
 app.get("/technologies/:id", async (req, res) => {
+  try {
+    const tech = await TechDetail.findOne({ id: req.params.id.toString() });
+    console.log(req.params.id);
+    // console.log(req);
+    console.log(tech);
+    if (!tech) {
+      return res.status(404).json({ message: "Technology not found" });
+    }
+    res.json(tech);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error fetching technology data" });
+  }
+});
+
+app.get("/patent/:id", async (req, res) => {
   try {
     const tech = await TechDetail.findOne({ id: req.params.id.toString() });
     console.log(req.params.id);
