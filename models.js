@@ -8,6 +8,15 @@ const techDetailSchema = new Schema({
     detailedDescription: String,
     genre: String,
     docket: { type: String, required: true, unique: true },
+    createdBy: {
+        userId: {
+            type: String,
+            required: true,
+            index: true
+        },
+        name: { type: String },
+        email: { type: String }
+    },
     innovators: [
         {
             name: String,
@@ -37,7 +46,7 @@ const techDetailSchema = new Schema({
     ],
     patent: {
         type: String,
-        enum: ["Not Filed", "Application Filed", "Under Examination", "Granted", "Abandoned/Lapsed"], 
+        enum: ["Not Filed", "Application Filed", "Under Examination", "Granted", "Abandoned/Lapsed"],
         required: true
     },
     patentId: { type: String },
@@ -52,6 +61,8 @@ const techDetailSchema = new Schema({
             _id: false
         }
     ],
+}, {
+    timestamps: {createdAt: 'createdAt', updatedAt: 'editedAt'}
 });
 
 techDetailSchema.index({ overview: "text", detailedDescription: "text" });
